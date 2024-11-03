@@ -24,7 +24,6 @@ pipeline HerbstPflanzungDatenPipeline {
             "id" oftype GeoPattern,
             "baumfamilie" oftype text
         ];
-        drop_invalid_rows: true;
     }
 
 // Define a value type for geographic coordinates in the specified pattern
@@ -50,10 +49,6 @@ pipeline HerbstPflanzungDatenPipeline {
     constraint Vogelsang oftype RegexConstraint {
         regex: /^Vogelsang.*/;
     }
-
-  
-
-    block HerbstPflanzungDatenValidFilter oftype Transformer
 
 // Load the processed data into an SQLite database table named 'trees'
     block HerbstPflanzungDatenSQLiteLoader oftype SQLiteLoader {
