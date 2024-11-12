@@ -34,9 +34,9 @@ This data source will provide weather and climate data in Chicago, including ave
 
 ## Work Packages
 
-Extract Data from Multiple Sources
-Implement Data Transformation Step in ETL Pipeline
-Implement Data Loading Step in ETL Data Pipeline
-Automated Tests for the Project
-Continuous Integration Pipeline for the Project
-Final Report and Presentation Submission
+1. Extract Data from Multiple Sources
+2. Implement Data Transformation Step in ETL Pipeline
+3. Implement Data Loading Step in ETL Data Pipeline
+4. Automated Tests for the Project
+5. Continuous Integration Pipeline for the Project
+6. Final Report and Presentation Submission
