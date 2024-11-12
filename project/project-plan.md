@@ -16,7 +16,8 @@ The analysis will provide a deeper understanding of crime patterns in Chicago, p
 ## Datasources
 
 ### Datasource1: Chicago Crime Dataset
-* Data URL: https://data.cityofchicago.org/Public-Safety/Crimes-2001-to-Present/ijzp-q8t2/data
+* Metadata URL: https://data.cityofchicago.org/Public-Safety/Crimes-2001-to-Present/ijzp-q8t2/data
+* CSV URL: https://data.cityofchicago.org/api/views/ijzp-q8t2/rows.csv?accessType=DOWNLOAD&bom=true&format=true&delimiter=;
 * Data Type: CSV
 
 The Chicago Crime Dataset provides a comprehensive record of reported crimes in the city of Chicago from 2001 to the present. This dataset is essential for analyzing crime patterns, trends, and correlations within the city and can aid in understanding the distribution and nature of criminal activity over time.
