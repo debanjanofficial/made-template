@@ -68,13 +68,13 @@ pipeline EconomicMetricsPipeline {
     // Loading GDP data into the SQLite database
     block GDPSaver oftype SQLiteLoader {
         table: 'gdpPerCapita';
-        file: 'economic_metrics.sqlite';
+        file: 'country-stats.sqlite';
     }
 
     // Loading Bond data into the SQLite database
     block BondSaver oftype SQLiteLoader {
         table: 'bondIssuance';
-        file: 'economic_metrics.sqlite';
+        file: 'country-stats.sqlite';
     }
 
     DataDownloader
