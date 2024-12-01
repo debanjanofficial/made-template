@@ -9,7 +9,6 @@ pipeline BatteryTempMeasurePipeline {
         -> BatteryTempMeasureCSVInterpreter
         -> BatteryTempMeasureHeaderRename
         -> BatteryTempMeasureBatteryTemperatureHeaderRename
-        -> BatteryTempMeasureColumnDeleter
         -> BatteryTempMeasureTableInterpreter
         -> TemperatureColumnTransformer 
         -> BatteryTemperatureColumnTransformer
@@ -23,50 +22,47 @@ pipeline BatteryTempMeasurePipeline {
     block BatteryTempMeasureZipInterpreter oftype ArchiveInterpreter{
         archiveType: "zip";
     }
-
+    // 3. Pick CSV file
     block BatteryTempMeasureFilePicker oftype FilePicker {
         path: "/data.csv";
     }
-    //
+    
     block BatteryTempMeasureTextFileInterpreter oftype TextFileInterpreter {}
     
     // 3. Interpret CSV file
     block BatteryTempMeasureCSVInterpreter oftype CSVInterpreter {
         delimiter: ";";
     }
-
+    // 4. Rename Header
     block BatteryTempMeasureHeaderRename oftype CellWriter {
         at: range A1:E1;
         write: ['id','producer','model','month','temperature'];
     }
-
+    // 5. Rename Header to battery_temperature
     block BatteryTempMeasureBatteryTemperatureHeaderRename oftype CellWriter {
         at: cell J1;
         write: ['battery_temperature'];
     }
-
-    block BatteryTempMeasureColumnDeleter oftype ColumnDeleter {
-        delete: [column L, column M, column N, column O];
-    }
     
+    // 7. Transform temperature from Celcius to Fahrenheit
     transform CelciusToFahrenheit {
         from TemperatureInCelcius oftype decimal;
         to TemperatureInFahrenheit oftype decimal;
         TemperatureInFahrenheit: ((TemperatureInCelcius * 9/5) + 32);
     }
-
+    // 8. Transform temperature column
     block TemperatureColumnTransformer oftype TableTransformer {
         inputColumns: ['temperature'];
         outputColumn: 'temperature';
         uses: CelciusToFahrenheit;
     }
-
+    // 9. Transform battery_temperature column
     block BatteryTemperatureColumnTransformer oftype TableTransformer {
         inputColumns: ['battery_temperature'];
         outputColumn: 'battery_temperature';
         uses: CelciusToFahrenheit;
     }
-
+    // 10. Define Range of PosInteger
     valuetype PosInteger oftype integer{
         constraints: [ RangePosInteger];
     }
@@ -75,11 +71,11 @@ pipeline BatteryTempMeasurePipeline {
         lowerBound: 0;
         lowerBoundInclusive: false;
     }
-
+    // 10. Define Range of Month
     valuetype ListMonth oftype integer{
         constraints: [ RangeMonth];
     }
-
+    
     constraint RangeMonth oftype RangeConstraint{
         lowerBound: 1;
         lowerBoundInclusive: true;
@@ -87,7 +83,7 @@ pipeline BatteryTempMeasurePipeline {
         upperBoundInclusive: true;
     }
 
-    // 8. Interpret a Sheet as Table
+    // 11. Interpret a Sheet as Table
     block BatteryTempMeasureTableInterpreter oftype TableInterpreter {
         header: true;
         columns: [
@@ -100,7 +96,7 @@ pipeline BatteryTempMeasurePipeline {
         ];
     }
 
-    // 9. Loads Table into SQLite Database
+    // 12. Loads Table into SQLite Database
     block BatteryTempMeasureLoader oftype SQLiteLoader {
         table: "temperatures";
         file: "temperatures.sqlite";
