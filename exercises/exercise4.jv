@@ -1,0 +1,108 @@
+// 1. Pipeline Battery temperature measurements of mobile devices outdoors
+pipeline BatteryTempMeasurePipeline {
+
+    BatteryTempMeasureExtractor -> BatteryTempMeasureZipInterpreter;
+
+    BatteryTempMeasureZipInterpreter
+        -> BatteryTempMeasureFilePicker
+        -> BatteryTempMeasureTextFileInterpreter
+        -> BatteryTempMeasureCSVInterpreter
+        -> BatteryTempMeasureHeaderRename
+        -> BatteryTempMeasureBatteryTemperatureHeaderRename
+        -> BatteryTempMeasureColumnDeleter
+        -> BatteryTempMeasureTableInterpreter
+        -> TemperatureColumnTransformer 
+        -> BatteryTemperatureColumnTransformer
+        -> BatteryTempMeasureLoader;
+
+    // 2. Extracting file from url
+    block BatteryTempMeasureExtractor oftype HttpExtractor{
+        url: "https://www.mowesta.com/data/measure/mowesta-dataset-20221107.zip";
+    }
+
+    block BatteryTempMeasureZipInterpreter oftype ArchiveInterpreter{
+        archiveType: "zip";
+    }
+
+    block BatteryTempMeasureFilePicker oftype FilePicker {
+        path: "/data.csv";
+    }
+    //
+    block BatteryTempMeasureTextFileInterpreter oftype TextFileInterpreter {}
+    
+    // 3. Interpret CSV file
+    block BatteryTempMeasureCSVInterpreter oftype CSVInterpreter {
+        delimiter: ";";
+    }
+
+    block BatteryTempMeasureHeaderRename oftype CellWriter {
+        at: range A1:E1;
+        write: ['id','producer','model','month','temperature'];
+    }
+
+    block BatteryTempMeasureBatteryTemperatureHeaderRename oftype CellWriter {
+        at: cell J1;
+        write: ['battery_temperature'];
+    }
+
+    block BatteryTempMeasureColumnDeleter oftype ColumnDeleter {
+        delete: [column L, column M, column N, column O];
+    }
+    
+    transform CelciusToFahrenheit {
+        from TemperatureInCelcius oftype decimal;
+        to TemperatureInFahrenheit oftype decimal;
+        TemperatureInFahrenheit: ((TemperatureInCelcius * 9/5) + 32);
+    }
+
+    block TemperatureColumnTransformer oftype TableTransformer {
+        inputColumns: ['temperature'];
+        outputColumn: 'temperature';
+        uses: CelciusToFahrenheit;
+    }
+
+    block BatteryTemperatureColumnTransformer oftype TableTransformer {
+        inputColumns: ['battery_temperature'];
+        outputColumn: 'battery_temperature';
+        uses: CelciusToFahrenheit;
+    }
+
+    valuetype PosInteger oftype integer{
+        constraints: [ RangePosInteger];
+    }
+
+    constraint RangePosInteger oftype RangeConstraint{
+        lowerBound: 0;
+        lowerBoundInclusive: false;
+    }
+
+    valuetype ListMonth oftype integer{
+        constraints: [ RangeMonth];
+    }
+
+    constraint RangeMonth oftype RangeConstraint{
+        lowerBound: 1;
+        lowerBoundInclusive: true;
+        upperBound: 12;
+        upperBoundInclusive: true;
+    }
+
+    // 8. Interpret a Sheet as Table
+    block BatteryTempMeasureTableInterpreter oftype TableInterpreter {
+        header: true;
+        columns: [
+            "id" oftype PosInteger,
+            "producer" oftype text,
+            "model" oftype text,
+            "month" oftype ListMonth,
+            "temperature" oftype decimal,
+            "battery_temperature" oftype decimal,
+        ];
+    }
+
+    // 9. Loads Table into SQLite Database
+    block BatteryTempMeasureLoader oftype SQLiteLoader {
+        table: "temperatures";
+        file: "temperatures.sqlite";
+    }
+}
