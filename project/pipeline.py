@@ -9,8 +9,8 @@ import io
 import gzip
 
 # Define paths
-DATA_DIR = "/Users/admin/projects/made-template/data"
-SOURCE_INFO_FILE = "/Users/admin/projects/made-template/project/source_info.json"
+DATA_DIR = "/Users/admin/projects/Data_Engineering/made-template/data"
+SOURCE_INFO_FILE = "/Users/admin/projects/Data_Engineering/made-template/project/source_info.json"
 
 # Function to fetch data
 def fetch_data():

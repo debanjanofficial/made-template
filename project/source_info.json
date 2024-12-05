@@ -1,17 +1,19 @@
 {
   "data_sources": [
     {
-      "source_name": "Chicago Data Portal",
-      "source_address": "https://data.cityofchicago.org/Public-Safety/Crimes-2001-to-Present/ijzp-q8t2/data",
-      "data_details": "The Chicago Crime Dataset provides a comprehensive record of reported crimes in the city of Chicago from 2001 to the present.",
-      "data_urls": "https://data.cityofchicago.org/api/views/ijzp-q8t2/rows.csv?accessType=DOWNLOAD&bom=true&format=true&delimiter=;",
-      "data_type": "csv"},
-    {
       "source_name": "Meteostat",
       "source_address": "https://meteostat.net/en/",
       "data_details": "Data source will provide weather and climate data in Chicago, including average air temperature, daily minimum and maximum air temperature, monthly precipitation total, maximum snow depth, average wind direction and speed, peak wind gust, average sea-level air pressure, and monthly sunshine total.",
       "api_endpoint": "https://bulk.meteostat.net/v2/monthly/72530.csv.gz",
       "data_type": "gzip"
-    }
+    },
+    
+    {
+      "source_name": "Chicago Data Portal",
+      "source_address": "https://data.cityofchicago.org/Public-Safety/Crimes-2001-to-Present/ijzp-q8t2/data",
+      "data_details": "The Chicago Crime Dataset provides a comprehensive record of reported crimes in the city of Chicago from 2001 to the present.",
+      "data_urls": "https://data.cityofchicago.org/api/views/ijzp-q8t2/rows.csv?accessType=DOWNLOAD&bom=true&format=true&delimiter=;",
+      "data_type": "csv"}
+    
   ]
 }

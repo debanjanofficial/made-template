@@ -4,4 +4,4 @@
 # source /path/to/your/venv/bin/activate
 
 # Run the pipeline Python script
-python3 project/pipeline.py
+python3 pipeline.py
