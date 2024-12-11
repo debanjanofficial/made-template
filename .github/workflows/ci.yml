@@ -1,0 +1,44 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-test:
+    runs-on: macos-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v2
+
+    - name: Set up Python 3.13.0
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.13.0'
+      
+    - name: Check versions
+      run: |
+        python --version
+        sqlite3 --version
+
+    - name: Display Environment Info
+      run: |
+        echo "Python Version:"
+        python --version
+        echo "SQLite Version:"
+        sqlite3 --version
+        echo "List Files in Data Directory:"
+        ls -l data/
+    
+    - name: Install Dependencies
+      run: |
+        python3 -m pip install --upgrade pip
+        pip install --upgrade pandas
+        pip install -r requirements.txt
+
+    - name: Run Tests
+      run: |
+        chmod +x project/tests.sh
+        bash project/tests.sh
