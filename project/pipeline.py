@@ -79,8 +79,8 @@ class DataTransformer:
 
 
 class DataLoader:
-    def __init__(self, transformed_data: dict, db_path: str):
-        self.transformed_data = transformed_data
+    def __init__(self, df: dict, db_path: str):
+        self.transformed_data = df
         self.db_path = db_path
 
     def load(self) -> None:
