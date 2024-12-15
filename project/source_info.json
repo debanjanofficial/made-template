@@ -1,16 +1,7 @@
 {
-  "data_dir": "data",
-  "db_path": "data/processed_data.db",
-  "data_sources": [
-    {
-      "source_name": "WeatherData",
-      "kaggle_dataset": "abantikabose/chicago-weather-data",
-      "file_name": "Chicago_Weather.csv"
-    },
-    {
-      "source_name": "CrimeData",
-      "api_endpoint": "https://data.cityofchicago.org/resource/ijzp-q8t2.json",
-      "file_name": "crime_data.csv"
-    }
+  "data_dir": "data", 
+  "datasets": [
+    "abantikabose/chicago-weather-data", 
+    "abantikabose/chicago-crime-dataset-post-covid"
   ]
 }

@@ -2,8 +2,8 @@
 
 # Set paths for input data and output database
 DB_FILE="data/processed_data.db"
-CSV_CRIME_INPUT="data/crime_data.csv"
-CSV_WEATHER_INPUT="data/Chicago_Weather.csv"
+CSV_CRIME_INPUT="data/crime_data_filtered.csv"
+CSV_WEATHER_INPUT="data/weather_data.csv"
 
 # Run the pipeline
 echo "Loading and executing pipeline.py"
@@ -40,51 +40,51 @@ echo "Checking database tables..."
 TABLES=$(sqlite3 "$DB_FILE" ".tables")
 
 # Adjust table name checks to be case-insensitive
-echo "$TABLES" | grep -qi "CrimeData"
+echo "$TABLES" | grep -qi "crime_data_filtered"
 if [ $? -eq 0 ]; then
-    echo "Test passed: 'CrimeData' table exists."
+    echo "Test passed: 'crime_data_filtered' table exists."
 else
-    echo "Test failed: 'CrimeData' table is missing."
+    echo "Test failed: 'crime_data_filtered' table is missing."
     exit 1
 fi
 
-echo "$TABLES" | grep -qi "WeatherData"
+echo "$TABLES" | grep -qi "weather_data"
 if [ $? -eq 0 ]; then
-    echo "Test passed: 'WeatherData' table exists."
+    echo "Test passed: 'weather_data' table exists."
 else
-    echo "Test failed: 'WeatherData' table is missing."
+    echo "Test failed: 'weather_data' table is missing."
     exit 1
 fi
 
-echo "Listing columns in 'CrimeData' table..."
-COLUMNS=$(sqlite3 "$DB_FILE" "PRAGMA table_info(CrimeData);")
+echo "Listing columns in 'crime_data_filtered' table..."
+COLUMNS=$(sqlite3 "$DB_FILE" "PRAGMA table_info(crime_data_filtered);")
 echo "$COLUMNS"
 
-echo "Listing columns in 'WeatherData' table..."
-COLUMNS=$(sqlite3 "$DB_FILE" "PRAGMA table_info(WeatherData);")
+echo "Listing columns in 'weather_data' table..."
+COLUMNS=$(sqlite3 "$DB_FILE" "PRAGMA table_info(weather_data);")
 echo "$COLUMNS"
 
 
 echo ""
 
-# Data Integrity Checks for the 'CrimeData' table
-#echo "Verifying data integrity in the 'CrimeData' table..."
-#NULL_CHECK=$(sqlite3 "$DB_FILE" "SELECT COUNT(*) FROM CrimeData WHERE date IS NULL;")
-#if [ "$NULL_CHECK" -eq 0 ]; then
-    #echo "Data integrity check passed: No unexpected NULL values in 'CrimeData'."
-#else
-    #echo "Data integrity check failed: Found $NULL_CHECK unexpected NULL values in 'CrimeData'."
-    #exit 1
-#fi
+# Data Integrity Checks for the 'crime_data_filtered' table
+echo "Verifying data integrity in the 'crime_data_filtered' table..."
+NULL_CHECK=$(sqlite3 "$DB_FILE" "SELECT COUNT(*) FROM crime_data_filtered WHERE Date IS NULL;")
+if [ "$NULL_CHECK" -eq 0 ]; then
+    echo "Data integrity check passed: No unexpected NULL values in 'crime_data_filtered'."
+else
+    echo "Data integrity check failed: Found $NULL_CHECK unexpected NULL values in 'crime_data_filtered'."
+    exit 1
+fi
 
 echo ""
 
-# Data Integrity Checks for the 'WeatherData' table
-echo "Verifying data integrity in the 'WeatherData' table..."
-TMAX_CHECK=$(sqlite3 "$DB_FILE" "SELECT COUNT(*) FROM WeatherData WHERE tmax IS NULL;")
-TMIN_CHECK=$(sqlite3 "$DB_FILE" "SELECT COUNT(*) FROM WeatherData WHERE tmin IS NULL;")
+# Data Integrity Checks for the 'weather_data' table
+echo "Verifying data integrity in the 'weather_data' table..."
+TMAX_CHECK=$(sqlite3 "$DB_FILE" "SELECT COUNT(*) FROM weather_data WHERE tmax IS NULL;")
+TMIN_CHECK=$(sqlite3 "$DB_FILE" "SELECT COUNT(*) FROM weather_data WHERE tmin IS NULL;")
 if [ "$TMAX_CHECK" -eq 0 ] && [ "$TMIN_CHECK" -eq 0 ]; then
-    echo "Data integrity check passed: No unexpected NULL values in 'WeatherData'."
+    echo "Data integrity check passed: No unexpected NULL values in 'weather_data'."
 else
     echo "Data integrity check failed: Found $TMAX_CHECK unexpected NULL values in 'tmax', $TMIN_CHECK unexpected NULL values in 'tmin'."
     exit 1
