@@ -1,0 +1,75 @@
+// Pipeline GTFS
+pipeline GTFSPipeline {
+
+    // 1. Load GTFS Data
+
+    GTFSExtractor
+        -> GTFSZipInterpreter
+        -> GTFSTextFilePicker
+        -> GTFSTextFileInterpreter
+        -> GTFSCSVInterpreter
+        -> GTFSTableInterpreter
+        -> GTFSLoader;
+
+    // 2. Extracting file from url
+    block GTFSExtractor oftype HttpExtractor{
+        url: "https://gtfs.rhoenenergie-bus.de/GTFS.zip";
+    }
+
+    block GTFSZipInterpreter oftype ArchiveInterpreter{
+        archiveType: "zip";
+    }
+
+    block GTFSTextFilePicker oftype FilePicker {
+        path: "/stops.txt";
+    }
+
+    // 3. Text Interpreter
+
+    block GTFSTextFileInterpreter oftype TextFileInterpreter {
+        encoding: "utf8";
+    }
+    // 4. CSV Interpreter
+    block GTFSCSVInterpreter oftype CSVInterpreter {
+        delimiter: ',';
+        enclosing: '"'; 
+		enclosingEscape: '"';
+    }
+
+    // 5. Define type of values
+    valuetype Zone1925 oftype integer{
+        constraints: [ZoneIdConstraint];
+    }
+
+    constraint ZoneIdConstraint on integer:
+        value == 1925;
+
+    valuetype GeoCoordinate90 oftype decimal {
+        constraints: [GeoCoordinateRange];
+        }
+
+    constraint GeoCoordinateRange oftype RangeConstraint {
+        lowerBound: -90;
+        lowerBoundInclusive: true;
+        upperBound: 90;
+        upperBoundInclusive: true;
+        }
+
+    // 6. Interpret a Sheet as Table
+    block GTFSTableInterpreter oftype TableInterpreter {
+        header: true;
+        columns: [
+            "stop_id" oftype integer,
+            "stop_name" oftype text,
+            "stop_lat" oftype GeoCoordinate90,
+            "stop_lon" oftype GeoCoordinate90,
+            "zone_id" oftype Zone1925,
+        ];
+    }
+
+    // 7. Loads Table into SQLite Database
+    block GTFSLoader oftype SQLiteLoader {
+        table: "stops";
+        file: "gtfs.sqlite";
+    }
+}
