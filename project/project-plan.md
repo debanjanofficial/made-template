@@ -28,6 +28,7 @@ The Chicago Crime Dataset provides a comprehensive record of reported crimes in 
 - **District**: Police district where the crime occurred, aiding in high-level regional crime analysis.
 
 ### Datasource2: Chicago Weather Dataset
+* Metadata URL: https://meteostat.net/en/station/72530?t=2021-01-01/2025-01-02
 * Data URL: https://bulk.meteostat.net/v2/monthly/72530.csv.gz
 * Data Type: CSV
 
