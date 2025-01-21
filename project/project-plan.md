@@ -1,6 +1,6 @@
 ## Title
 <!-- Give your project a short title. -->
-Crime Data Analysis in Chicago post Covid (2021-present)
+Analyzing the Impact of Weather on Crime Patterns in Chicago (Post-COVID, 2021-Present)
 
 ## Main Question
 1. What are the patterns in crime types and locations across different neighborhoods in Chicago?
