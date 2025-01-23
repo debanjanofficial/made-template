@@ -1,37 +1,190 @@
-# Methods of Advanced Data Engineering Template Project
+# Methods of Advanced Data Engineering
 
-This template project provides some structure for your open data project in the MADE module at FAU.
-This repository contains (a) a data science project that is developed by the student over the course of the semester, and (b) the exercises that are submitted over the course of the semester.
+This repository contains the entire workflow, data, and analyses for exploring patterns of crime incidents and their correlation with environmental factors in Chicago using python and also all mandatory exercises using jayvee.
 
-To get started, please follow these steps:
-1. Create your own fork of this repository. Feel free to rename the repository right after creation, before you let the teaching instructors know your repository URL. **Do not rename the repository during the semester**.
+# Project Name: Analyzing the Impact of Weather on Crime Patterns in Chicago (Post-COVID, 2021-Present)
 
-## Project Work
-Your data engineering project will run alongside lectures during the semester. We will ask you to regularly submit project work as milestones, so you can reasonably pace your work. All project work submissions **must** be placed in the `project` folder.
+Chicago's urban landscape presents a unique opportunity to study the interplay between weather patterns and criminal activity. This project examines the relationship between temperature variations and crime incidents in Chicago from 2021 onwards, a period marked by significant societal changes following the COVID-19 pandemic.
+By analyzing daily temperature data alongside crime reports, we seek to understand how weather conditions might influence criminal behavior across Chicago's diverse neighborhoods. The study combines two key datasets: detailed crime records from the Chicago Police Department and comprehensive weather data including temperature extremes, creating a robust foundation for pattern analysis.
 
-### Exporting a Jupyter Notebook
-Jupyter Notebooks can be exported using `nbconvert` (`pip install nbconvert`). For example, to export the example notebook to HTML: `jupyter nbconvert --to html examples/final-report-example.ipynb --embed-images --output final-report.html`
+---
+
+## Features
+
+- Exploratory Data Analysis (EDA) for temporal, spatial, and environmental trends.
+- Insights into high-risk areas in Chicago.
+- using meteorological data to investigate relationships between crime and environmental conditions.
+- Automated ETL (Extract, Transform, Load) pipeline for data processing.
+- Comprehensive visualizations including heatmaps, scatterplots, and bar charts.
+
+---
+
+## Dataset Details
+
+### Chicago Crime Data
+- **Source:** Chicago Crime Dataset(2021-Present): Contains detailed
+crime records.
+- **Attributes:** Date, time, location, demographics, and more.
+
+### Chicago Weather Data
+- **Source:** Chicago Weather Data (2021-present)
+- **Attributes:** Temperature, precipitation, and other environmental factors.
+
+For dataset preparation, preprocessing, and license compliance, see the `data` folder and `source_info.json`.
+
+---
+
+## Repository Structure
+   ```bash
+made-template/
+├── .github/
+│   └── workflows/
+│       ├── ci.yml
+│       └── exercise-feedback.yml
+├── .vscode/
+│   ├── extensions.json
+│   └── settings.json
+├── data/
+│   ├── .gitkeep
+│   ├── Chicago_Weather.csv
+│   ├── crime_data_filtered.csv
+│   ├── Crimes_-_2001_to_Present.csv
+│   └── weather_data.csv
+├── examples/
+│   ├── data-exploration-example.ipynb
+│   ├── data.sqlite
+│   ├── final-report-example.ipynb
+│   └── project-plan-example.md
+├── exercises/
+│   ├── .gitkeep
+│   ├── airports.sqlite
+│   ├── country-stats.sqlite
+│   ├── exercise1.jv
+│   ├── exercise2.jv
+│   ├── exercise3.jv
+│   ├── exercise4.jv
+│   ├── exercise5.jv
+│   ├── gtfs.sqlite
+│   └── temperatures.sqlite
+├── project/
+│   ├── analysis.ipynb
+│   ├── analysis-report.pdf
+│   ├── data-report.pdf
+│   ├── pipeline.py
+│   ├── pipeline.sh
+│   ├── project-plan.md
+│   ├── source_info.json
+│   └── tests.sh
+├── .gitignore
+├── LICENSE
+├── pipeline.log
+├── README.md
+├── requirements.txt
+└── .DS_Store 
+   ```
 
 
-## Exercises
-During the semester you will need to complete exercises using [Jayvee](https://github.com/jvalue/jayvee). You **must** place your submission in the `exercises` folder in your repository and name them according to their number from one to five: `exercise<number from 1-5>.jv`.
+## Repo Details
 
-In regular intervals, exercises will be given as homework to complete during the semester. Details and deadlines will be discussed in the lecture, also see the [course schedule](https://made.uni1.de/).
+### `.github/workflows`
+- **ci.yml**: Defines the continuous integration pipeline for testing the code.
+- **exercise-feedback.yml**: Configures the workflow for providing exercise feedback.
 
-### Exercise Feedback
-We provide automated exercise feedback using a GitHub action (that is defined in `.github/workflows/exercise-feedback.yml`). 
+### `data`
+- **.gitkeep**: Placeholder for ensuring the `data` directory is versioned.
 
-To view your exercise feedback, navigate to Actions → Exercise Feedback in your repository.
+### `exercises`
+- **airports.sqlite, country-stats.sqlite, gtfs.sqlite, temperatures.sqlite, trees.sqlite**: Databases from different exercises.
+- **exercise1.jv - exercise5.jv**: Sample Jayvee files for exercises.
+- **.gitkeep**: Ensures the directory remains in version control.
 
-The exercise feedback is executed whenever you make a change in files in the `exercise` folder and push your local changes to the repository on GitHub. To see the feedback, open the latest GitHub Action run, open the `exercise-feedback` job and `Exercise Feedback` step. You should see command line output that contains output like this:
+### `project`
+- **analysis-report.pdf**: Final report documenting the key findings and analysis.
+- **data-report.pdf**: Detailed report on the processed datasets.
+- **pipeline.py**: Python script automating the ETL process.
+- **pipeline.sh**: Shell script for running the pipeline.
+- **project-plan.md**: Project plan outlining objectives, methodology, and milestones.
+- **source_info.json**: JSON file with metadata about the sources used.
+- **tests.sh**: Bash script for testing data and pipeline functionality.
+-**analysis.ipynb**: Exploratory Data Analysis of cleaned, preprocessed data which are in `data` folder.
 
-```sh
-Found exercises/exercise1.jv, executing model...
-Found output file airports.sqlite, grading...
-Grading Exercise 1
-	Overall points 17 of 17
-	---
-	By category:
-		Shape: 4 of 4
-		Types: 13 of 13
-```
+### Root Files
+- **LICENSE**: Licensing details for the repository.
+- **README.md**: This documentation file.
+- **requirements.txt**: Python dependencies required for the project.
+
+---
+
+## Installation
+
+### Prerequisites
+- Python 3.11
+- Required libraries (see `requirements.txt`)
+
+### Steps
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/debanjanofficial/made-template.git
+   cd made-template
+
+2. Install dependencies:
+   ```bash
+   pip install -r requirements.txt
+
+3. Run the pipeline
+   to execute the data ETL pipeline and perform analysis:
+   ```bash 
+   python3 project/pipeline.py
+
+4. Or, use the shell script to automate:
+   ```bash 
+   bash project/pipeline.sh
+
+5. Test the Pipeline
+   Run the provided test suite to ensure the integrity of the pipeline:
+   ```bash
+   bash project/tests.sh
+
+---
+
+## Key Insights
+
+### Temporal Patterns
+- Summer months record approximately 260,000 crimes whereas winter periods show lower rates with about 200,000 crimes.
+
+### Spatial Trends
+- The average daily crime count maintains a relatively stable baseline between 600-800 incidents throughout the period.
+
+### Environmental Factors
+- Criminal activity tends to increase with higher
+temperatures.
+- Snowfall has a deterrent effect on crime rates.
+- Precipitation has minimal impact on criminal behavior.
+- Seasonal variations significantly influence crime patterns.
+
+For detailed analysis, see the `analysis-report.pdf` in the `project` folder.
+
+---
+
+## Future Work
+
+- **Enhanced Data Integration**:Incorporation of multiple weather station data points
+- **Advanced Analytics**: Development of predictive models for crime forecasting
+- **Detailed Crime Pattern**:Clear relationship between urban infrastructure and crime locations
+
+---
+
+## References
+
+- **Chicago Crime Data**: [Public Dataset Sources](https://data.cityofchicago.org/Public-Safety/Crimes-2022/9hwr-2zxp/about_data)
+- **Chicago Weather Data**: [Public Dataset Sources](https://meteostat.net/en/station/72530?t=2021-01-01/2025-01-0)
+
+---
+
+## License
+
+This project is licensed under the CC0-1.0 license. See the `LICENSE` file for details.
+
+
+
+
