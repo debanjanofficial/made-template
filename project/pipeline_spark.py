@@ -188,8 +188,8 @@ class DataTransformer:
             return
 
         # Impute missing tmax / tmin with column medians (approx)
-        for col_name in ("tmax", "tmin"):
-            median_val = weather_df.approxQuantile(col_name, [0.5], 0.001)[0]
+        medians = weather_df.approxQuantile(["tmax", "tmin"], [0.5], 0.001)
+        for col_name, (median_val,) in zip(("tmax", "tmin"), medians):
             weather_df = weather_df.fillna({col_name: median_val})
             logger.info("Filled missing '%s' values with median %.2f.", col_name, median_val)
 
@@ -294,7 +294,7 @@ class DataLoader:
             logger.info("Connected to SQLite database at %s", self.db_path)
 
             for table_name, df in self.transformed_data.items():
-                logger.info("Writing table '%s' to SQLite …", table_name)
+                logger.info("Writing table '%s' to SQLite ...", table_name)
                 pandas_df = df.toPandas()
                 pandas_df.to_sql(table_name, conn, if_exists="replace", index=False)
                 logger.info("Table '%s' written (%d rows).", table_name, len(pandas_df))
@@ -389,7 +389,7 @@ def _merge_spark_csv(spark_output_dir: str, target_path: str) -> None:
 if __name__ == "__main__":
     logging.basicConfig(
         level=logging.INFO,
-        format="%(asctime)s %(levelname)-8s %(name)s – %(message)s",
+        format="%(asctime)s %(levelname)-8s %(name)s - %(message)s",
         datefmt="%Y-%m-%d %H:%M:%S",
     )
 
